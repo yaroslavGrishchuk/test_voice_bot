@@ -11,31 +11,31 @@ val mainScenario = Scenario {
         }
         action {
             reactions.run {
-                image("https://media.giphy.com/media/ICOgUNjpvO0PC/source.gif")
                 sayRandom(
                     "Hello! How can I help?",
                     "Hi there! How can I help you?"
-                )
-                buttons(
-                    "Help me!",
-                    "How are you?",
-                    "What is your name?"
                 )
             }
         }
     }
 
-    state("bye") {
+    state(name = "weather") {
         activators {
-            intent("Bye")
+            intent("/Weather")
         }
-
         action {
-            reactions.sayRandom(
-                "See you soon!",
-                "Bye-bye!"
-            )
-            reactions.image("https://media.giphy.com/media/EE185t7OeMbTy/source.gif")
+            reactions.say("В каком городе?")
+            reactions.go("/Weather/chooseCity")
+        }
+    }
+
+    state("chooseCity") {
+        activators {
+            intent("/Weather/chooseCity")
+        }
+        action {
+            val city = activator.caila?.slots?.get("city") ?: error("Missing city")
+            com.justai.jaicf.template.getWeather(city)
         }
     }
 
