@@ -1,23 +1,23 @@
 package com.justai.jaicf.template
 
-import java.net.HttpURLConnection
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.jsonArray
+import kotlinx.serialization.json.jsonObject
 import java.net.URL
+import kotlin.math.roundToInt
 
-fun main() {
-    getWeather("Санкт-Петербург")
-}
 
-fun getWeather(city: String) {
-    val url = URL("http://api.openweathermap.org/data/2.5/find?q=${city},RU&type=like&appid=0274f694c257e63163d10804df84e456")
+const val kelvinToCelConst = 273.15
 
-    with(url.openConnection() as HttpURLConnection) {
-        requestMethod = "GET"
-
-        println("\nSent 'GET' request to URL : $url; Response Code : $responseCode")
-        inputStream.bufferedReader().use {
-            it.lines().forEach { line ->
-                println(line)
-            }
-        }
+fun getWeather(city: String, weatherApiKey: String): Int {
+    val text =
+        URL("https://api.openweathermap.org/data/2.5/find?q=$city&type=like&appid=$weatherApiKey").readText()
+    val json = Json.parseToJsonElement(text).jsonObject
+    return if (json["count"].toString().toInt() > 0) {
+        (json["list"]?.jsonArray?.get(0)?.jsonObject?.get("main")?.jsonObject?.get("temp").toString()
+            .toDouble() - kelvinToCelConst).roundToInt()
+    } else {
+        -300
     }
+
 }

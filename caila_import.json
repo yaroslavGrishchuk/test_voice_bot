@@ -13,46 +13,37 @@
   },
   "intents": [
     {
-      "id": 6761,
+      "id": 727124,
       "path": "/Hello",
       "enabled": true,
       "shared": false,
-      "phrases": [
-        {
-          "text": "hi"
-        },
-        {
-          "text": "hello"
-        },
-        {
-          "text": "welcome"
-        }
-      ],
+      "phrases": [],
       "patterns": []
     },
     {
-      "id": 6766,
+      "id": 749033,
       "path": "/Weather",
+      "answer": "",
       "enabled": true,
       "shared": false,
-      "phrases": [
-        {
-          "text": "Какая погода в городе "
-        },
-        {
-
-        }
+      "phrases": [],
+      "patterns": [
+        "[прогноз погоды/сколько градусов/какая погода/какая температура]",
+        "прогноз погоды [в городе/в] @city",
+        "сколько градусов [в городе/в] @city",
+        "какая погода [в городе/в] @city",
+        "какая температура [в городе/в] @city"
       ],
-      "patterns": []
+      "slots": [
+        {
+          "name": "city",
+          "entity": "city",
+          "required": true,
+          "prompts": [
+            "В каком городе?"
+          ]
+        }
+      ]
     }
-  ],
-  "entities": [],
-  "enabledSystemEntities": [
-    "duckling.number",
-    "duckling.time",
-    "duckling.duration",
-    "duckling.phone-number",
-    "duckling.email",
-    "duckling.url"
   ]
 }
